@@ -1,4 +1,4 @@
-# Домашнее задание к занятию 5. «Практическое применение Docker»
+<img width="1920" height="1080" alt="Снимок экрана (1663)" src="https://github.com/user-attachments/assets/f838e098-3e88-484a-882c-10ab7c9df87f" /># Домашнее задание к занятию 5. «Практическое применение Docker»
 
 ## Задача 1
 Сделайте в своем GitHub пространстве fork репозитория.
@@ -71,6 +71,8 @@ db. image=mysql:8. Контейнер должен работать в bridge-с
 Напишите bash-скрипт, который скачает ваш fork-репозиторий в каталог /opt и запустит проект целиком.
 Зайдите на сайт проверки http подключений, например(или аналогичный): https://check-host.net/check-http и запустите проверку вашего сервиса http://<внешний_IP-адрес_вашей_ВМ>:8090. Таким образом трафик будет направлен в ingress-proxy. Трафик должен пройти через цепочки: Пользователь → Internet → Nginx → HAProxy → FastAPI(запись в БД) → HAProxy → Nginx → Internet → Пользователь
 
+## Ответ:
+
 ### bash-скрипт ` deploy.sh `
 ```bash
 #!/bin/bash
@@ -133,12 +135,32 @@ echo "Deployment finished successfully."
 
 ```
 
+<img width="1920" height="1080" alt="Снимок экрана (1656)" src="https://github.com/user-attachments/assets/71127005-8b77-4edd-8314-662f94214faa" />
+
+<img width="1920" height="1080" alt="Снимок экрана (1657)" src="https://github.com/user-attachments/assets/9c2e0737-decb-4969-85d2-3360a73f494a" />
+
+<img width="1920" height="1080" alt="Снимок экрана (1658)" src="https://github.com/user-attachments/assets/c06bd3ca-8e8c-4973-a90d-fc21b43c0b11" />
+
+<img width="1920" height="1080" alt="Снимок экрана (1659)" src="https://github.com/user-attachments/assets/60ebbc4f-0396-4a22-8d5a-a0bad7d2bd6e" />
+
+
 (Необязательная часть) Дополнительно настройте remote ssh context к вашему серверу. Отобразите список контекстов и результат удаленного выполнения docker ps -a
 Повторите SQL-запрос на сервере и приложите скриншот и ссылку на fork.
 
+## Ответ:
+
+<img width="1920" height="1080" alt="Снимок экрана (1660)" src="https://github.com/user-attachments/assets/c86dc5ae-59cb-4cd5-a0da-569c06b31ca2" />
+
+### Ссылка на fork: https://github.com/Dmitriy-py/shvirtd-example-python.git
 
 
+## Задача 6
 
+Скачайте docker образ hashicorp/terraform:latest и скопируйте бинарный файл /bin/terraform на свою локальную машину, используя dive и docker save. Предоставьте скриншоты действий .
+
+## Ответ:
+
+<img width="1920" height="1080" alt="Снимок экрана (1663)" src="https://github.com/user-attachments/assets/e85d6b58-93e6-48bc-98cf-9e6c7dfd5e51" />
 
 
 
