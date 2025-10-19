@@ -162,8 +162,14 @@ echo "Deployment finished successfully."
 
 <img width="1920" height="1080" alt="Снимок экрана (1663)" src="https://github.com/user-attachments/assets/e85d6b58-93e6-48bc-98cf-9e6c7dfd5e51" />
 
+## Задача 6.1
 
+Добейтесь аналогичного результата, используя docker cp.
+Предоставьте скриншоты действий .
 
+## Ответ:
+
+<img width="1920" height="1080" alt="Снимок экрана (1662)" src="https://github.com/user-attachments/assets/cac9ab5c-48cf-464f-9a12-7c92c3485a7f" />
 
 
 
