@@ -64,6 +64,77 @@ db. image=mysql:8. Контейнер должен работать в bridge-с
 Чтобы обеспечить соответствие требованиям задания и предоставить полностью работоспособное решение, я переключился на mariadb:10.6.4-focal. Этот образ оказался более надежным и быстрым в инициализации, что позволило приложению без проблем создать необходимые таблицы и установить соединение с базой данных. Таким образом, переход на MariaDB позволил успешно продемонстрировать все требования задания, избежав проблем с таймингами, характерных для mysql:8.”
 
 ```
+## Задача 4
+
+Запустите в Yandex Cloud ВМ (вам хватит 2 Гб Ram).
+Подключитесь к Вм по ssh и установите docker.
+Напишите bash-скрипт, который скачает ваш fork-репозиторий в каталог /opt и запустит проект целиком.
+Зайдите на сайт проверки http подключений, например(или аналогичный): https://check-host.net/check-http и запустите проверку вашего сервиса http://<внешний_IP-адрес_вашей_ВМ>:8090. Таким образом трафик будет направлен в ingress-proxy. Трафик должен пройти через цепочки: Пользователь → Internet → Nginx → HAProxy → FastAPI(запись в БД) → HAProxy → Nginx → Internet → Пользователь
+
+### bash-скрипт ` deploy.sh `
+```bash
+#!/bin/bash
+set -e
+
+PROJECT_DIR="/opt/shvirtd-example-python"
+REPO_URL="https://github.com/Dmitriy-py/shvirtd-example-python.git"
+SERVICE_URL="http://127.0.0.1:8090"
+
+echo "Starting deployment..."
+
+
+if [ -d "$PROJECT_DIR" ]; then
+    echo "Stopping existing project..."
+    cd "$PROJECT_DIR"
+    docker compose down
+fi
+
+echo "Pruning unused Docker resources..."
+docker system prune -f
+docker volume prune -f
+docker network prune -f
+
+
+if [ -d "$PROJECT_DIR" ]; then
+    sudo rm -rf "$PROJECT_DIR"
+fi
+
+echo "Cloning repository from $REPO_URL to /opt..."
+sudo git clone "$REPO_URL" /opt/shvirtd-example-python
+
+sudo chown -R $USER:$USER "$PROJECT_DIR"
+
+echo "Building and starting containers..."
+cd "$PROJECT_DIR"
+
+if [ ! -f "$PROJECT_DIR/.env" ]; then
+    echo "ERROR: .env file not found in $PROJECT_DIR. Please create it manually."
+    exit 1
+fi
+
+docker compose up -d --build
+
+echo "Waiting 60 seconds for service initialization..."
+sleep 60
+
+STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" $SERVICE_URL)
+
+if [ "$STATUS_CODE" -eq 200 ]; then
+    echo "SUCCESS: Service is reachable at $SERVICE_URL (HTTP $STATUS_CODE)"
+else
+    echo "FAILURE: Service check failed (HTTP $STATUS_CODE)."
+    echo "Checking Docker logs..."
+    docker logs mysql-db-compose || true
+    docker logs web-app-compose || true
+    exit 1
+fi
+
+echo "Deployment finished successfully."
+
+```
+
+(Необязательная часть) Дополнительно настройте remote ssh context к вашему серверу. Отобразите список контекстов и результат удаленного выполнения docker ps -a
+Повторите SQL-запрос на сервере и приложите скриншот и ссылку на fork.
 
 
 
